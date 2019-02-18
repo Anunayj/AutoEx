@@ -1,7 +1,7 @@
 import get_result
 import threading
 from concurrent.futures import ThreadPoolExecutor
-executor = ThreadPoolExecutor(max_workers=25)
+executor = ThreadPoolExecutor(max_workers=50)
 
 class driver:
     def __init__(self,fileName,deptID):
@@ -18,10 +18,10 @@ class driver:
             break
 
 
-def loop(rollPrefix,rollLast,semester):
-    for roll in range(1,rollLast+1):
-        print(rollPrefix+str(roll).zfill(3))
-        executor.submit(steering.result,rollPrefix+str(roll).zfill(3),semester)
+    def loop(self,rollPrefix,rollLast,semester):
+        for roll in range(1,rollLast+1):
+            print(rollPrefix+str(roll).zfill(3))
+            executor.submit(self.result,rollPrefix+str(roll).zfill(3),semester)
 
-steering=driver("SIRTS_Civil",0)
-loop("0186CE151",120,7)
+steering=driver("SIRTP",0)
+steering.loop("0501CE161",125,5)
