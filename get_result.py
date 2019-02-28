@@ -86,7 +86,7 @@ class extract:
             print(e)
 
 
-    def getResult(self,roll,semester):
+    def getResult(self,roll,semester,file):
         #get session and captcha
         resp=self.sess.get(self.url)
         soup = BeautifulSoup(resp.text,'html5lib')
@@ -110,16 +110,16 @@ class extract:
         resultFound='<td class="resultheader">'
         notFound='<script language=JavaScript>alert("Result for this Enrollment No. not Found");</script>'
         if resultFound in result.text:
-            self.file.processResult(result.text)
+            file.processResult(result.text)
             return(0)
         elif notFound in result.text:
             return(0)
         else:
             return(1)
-    def driver(self,roll,semester):
+    def driver(self,roll,semester,file):
         for retryNumber in range(10):
             try:
-                while self.getResult(roll,semester) is 1:
+                while self.getResult(roll,semester,file) is 1:
                     pass
             except Exception as e:
                 print(e)
@@ -127,10 +127,10 @@ class extract:
             break
 
     def loop(self,rollPrefix,totalStudents,semester,fileName,x):
-        self.file=processFile(fileName)
+        file=processFile(fileName)
         for roll in range(1,totalStudents+1):
             print(rollPrefix+str(roll).zfill(x))
-            executor.submit(self.driver,rollPrefix+str(roll).zfill(x),semester)
+            executor.submit(self.driver,rollPrefix+str(roll).zfill(x),semester,file)
 
 
 def main(argv):
