@@ -15,7 +15,7 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 import sys, getopt
 
-executor = ThreadPoolExecutor(max_workers=100)
+executor = ThreadPoolExecutor(max_workers=25)
 
 class processFile:
     def __init__(self,filename):

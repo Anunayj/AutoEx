@@ -1,4 +1,5 @@
 # C extensions
+example.py
 *.so
 __pycache__/
 *.csv
