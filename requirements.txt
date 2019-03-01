@@ -1,2 +1,4 @@
 bs4
-pytesseract
+keras
+tensorflow
+numpy

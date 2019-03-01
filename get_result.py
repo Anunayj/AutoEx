@@ -4,18 +4,16 @@ import randoh
 from bs4 import BeautifulSoup
 import os
 import requests
-import pytesseract
-from pytesseract import image_to_string
-from PIL import Image
 import time
 import opencsv
 import re
-from io import BytesIO
 import threading
 from concurrent.futures import ThreadPoolExecutor
 import sys, getopt
+import solve_with_neurons
 
-executor = ThreadPoolExecutor(max_workers=25)
+
+executor = ThreadPoolExecutor(max_workers=200)
 
 class processFile:
     def __init__(self,filename):
@@ -94,9 +92,9 @@ class extract:
         #randomness = randoh.randoo()
         cap = self.sess.get(imageURL, allow_redirects=True)
 
-        config = '-l eng --oem 0 --psm 13 -c tessedit_char_whitelist=2346789AcCDeEFgGHjJkKlLnNpPqQRTuUvVxXYyzZ'
         #solve the Captcha
-        solution = pytesseract.image_to_string(Image.open(BytesIO(cap.content)), config=config).replace(" ","")
+
+        solution = solve_with_neurons.Solve(cap.content)
         time.sleep(5)
         viewState = soup.find('input',{'id':'__VIEWSTATE'})['value']
         viewStateGen = soup.find('input',{'id':'__VIEWSTATEGENERATOR'})['value']
