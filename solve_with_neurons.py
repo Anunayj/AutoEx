@@ -75,7 +75,7 @@ def Solve(img_str):
         x, y, w, h = letter_bounding_box
 
         # Extract the letter from the original image with a 2-pixel margin around the edge
-        letter_image = image[y - 4:y + h + 4, x - 2:x + w + 2]
+        letter_image = image[y - 6:y + h + 6, x - 2:x + w + 2]
 
         # Re-size the letter image to 20x20 pixels to match training data
         letter_image = resize_to_fit(letter_image, 20, 20)
