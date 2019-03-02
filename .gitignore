@@ -1,5 +1,6 @@
-# C extensions
 example.py
+Compare.py
+# C extensions
 *.so
 __pycache__/
 *.csv

@@ -2,3 +2,4 @@ bs4
 keras
 tensorflow
 numpy
+opencv-python
