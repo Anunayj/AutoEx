@@ -95,6 +95,9 @@ class extract:
         #solve the Captcha
 
         solution = solve_with_neurons.Solve(cap.content)
+        if not x:
+            return(1)
+
         time.sleep(5)
         viewState = soup.find('input',{'id':'__VIEWSTATE'})['value']
         viewStateGen = soup.find('input',{'id':'__VIEWSTATEGENERATOR'})['value']

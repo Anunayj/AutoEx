@@ -18,14 +18,9 @@ model._make_predict_function()
 
 def Solve(img_str):
     # Load the image and convert it to grayscale
-    #image = cv2.imread(image_file)
 
     nparr = np.fromstring(img_str, np.uint8)
     image = cv2.imdecode(nparr, cv2.IMREAD_COLOR) # cv2.IMREAD_COLOR in OpenCV 3.1
-
-    # CV
-    # image = cv.CreateImageHeader((img_np.shape[1], img_np.shape[0]), cv.IPL_DEPTH_8U, 3)
-    # cv.SetData(img_ipl, img_np.tostring(), img_np.dtype.itemsize * 3 * img_np.shape[1])
 
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -62,9 +57,9 @@ def Solve(img_str):
             letter_image_regions.append((x, y, w, h))
 
     # If we found more or less than 4 letters in the captcha, our letter extraction
-    # didn't work correcly. Skip the image instead of saving bad training data!
-    # if len(letter_image_regions) != 5:
-    #     continue
+    # didn't work correcly.Skip rather than wating 5 seconds
+    if len(letter_image_regions) != 5:
+        return(False)
 
     # Sort the detected letter images based on the x coordinate to make sure
     # we are processing them from left-to-right so we match the right image
@@ -72,7 +67,6 @@ def Solve(img_str):
     letter_image_regions = sorted(letter_image_regions, key=lambda x: x[0])
 
     # Create an output image and a list to hold our predicted letters
-    output = cv2.merge([image] * 3)
     predictions = []
 
     # loop over the lektters
@@ -81,7 +75,7 @@ def Solve(img_str):
         x, y, w, h = letter_bounding_box
 
         # Extract the letter from the original image with a 2-pixel margin around the edge
-        letter_image = image[y - 2:y + h + 2, x - 2:x + w + 2]
+        letter_image = image[y - 4:y + h + 4, x - 2:x + w + 2]
 
         # Re-size the letter image to 20x20 pixels to match training data
         letter_image = resize_to_fit(letter_image, 20, 20)
@@ -96,10 +90,6 @@ def Solve(img_str):
         # Convert the one-hot-encoded prediction back to a normal letter
         letter = lb.inverse_transform(prediction)[0]
         predictions.append(letter)
-
-        # draw the prediction on the output image
-        cv2.rectangle(output, (x - 2, y - 2), (x + w + 4, y + h + 4), (0, 255, 0), 1)
-        cv2.putText(output, letter, (x - 5, y - 5), cv2.FONT_HERSHEY_SIMPLEX, 0.55, (0, 255, 0), 2)
 
     # Print the captcha's text
     captcha_text = "".join(predictions)
