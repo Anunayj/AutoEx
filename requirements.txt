@@ -3,3 +3,4 @@ keras
 tensorflow
 numpy
 opencv-python
+requests
