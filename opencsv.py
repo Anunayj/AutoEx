@@ -10,6 +10,10 @@ class opencsv:
                 self.file.write("\n")
             else:
                 self.file.write(",")
-                
+
+    def bulkappend(self,listoflists):
+        for roll, lists in listoflists:
+            self.append(lists)
+
     def close(self):
         self.file.close()

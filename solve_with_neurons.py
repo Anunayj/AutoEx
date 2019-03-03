@@ -1,10 +1,17 @@
+import sys
+import os
+stderr = sys.stderr
+sys.stderr = open(os.devnull, 'w')
 from keras.models import load_model
+sys.stderr = stderr
+
 from helpers import resize_to_fit
 from imutils import paths
 import numpy as np
 import cv2
 import pickle
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 MODEL_FILENAME = "captcha_model.hdf5"
 MODEL_LABELS_FILENAME = "model_labels.dat"
@@ -14,8 +21,8 @@ with open(MODEL_LABELS_FILENAME, "rb") as f:
 
 # Load the trained neural network
 model = load_model(MODEL_FILENAME)
-model._make_predict_function()
 
+model._make_predict_function()
 def Solve(img_str):
     # Load the image and convert it to grayscale
 
