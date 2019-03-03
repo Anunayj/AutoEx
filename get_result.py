@@ -155,7 +155,22 @@ class extract:
                 continue
             break
 
-    def loop(self,rollPrefix,totalStudents,semester,fileName,x):
+    def loop(self,rollPrefix,totalStudents,semester,fileName):
+        #Validation and auto zfill
+        if len(rollPrefix) == 10:
+            x = 2
+        elif len(rollPrefix) == 9:
+            x = 3
+        else:
+            print("Roll prefix must be 10 or 9 character long")
+            sys.exit()
+        if x == 2 and totalStudents > 99:
+            print("Are you really sure you have that many students, unbelievable ")
+            sys.exit()
+        if semester < 1 or semester > 8:
+            print("Really, How many semester do you think you have?")
+            sys.exit()
+
         file=processFile(fileName)
         bar = probar(totalStudents)
         for roll in range(1,totalStudents+1):
@@ -167,11 +182,10 @@ def main(argv):
   total=0
   sem=1
   output='output'
-  zfill=2
   try:
-      opts, args = getopt.getopt(argv,"d:p:t:f:s:o:z:",["dept=","prefix=","total=","sem=","output=","zfill="])
+      opts, args = getopt.getopt(argv,"d:p:t:f:s:o:z:",["dept=","prefix=","total=","sem=","output="])
   except getopt.GetoptError as p:
-      print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName> -z <NumberOftrailingZero>')
+      print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>')
       sys.exit(2)
   for opt, arg in opts:
     if opt in ("-d", "--dept"):
@@ -184,14 +198,12 @@ def main(argv):
         sem = arg
     elif opt in ("-o", "--output"):
         output = arg
-    elif opt in ("-z", "--zfill"):
-        zfill = arg
     else:
-        print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName> -z <NumberOftrailingZero>')
+        print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>'')
         sys.exit()
 
     obj=extract(int(dept))
-    obj.loop(prefixs,int(total),int(sem),output,int(zfill))
+    obj.loop(prefixs,int(total),int(sem),output)
 
 
 if __name__ == "__main__":
