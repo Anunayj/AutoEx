@@ -74,12 +74,12 @@ class processFile:
             for t in range(self.numberOfColumns-1):
                 entry.append("")
             entry.append(str(self.passStudents)+"/"+str(self.totalStudents)+" = "+ "{0:.2f}".format(self.passStudents*100/self.totalStudents) + "%")
-            print('Result Downloaded Sucessfully Result Precentage = ' + "{0:.2f}".format(self.passStudents*100/self.totalStudents) + "%")
+            print('\nResult Downloaded Sucessfully, Result Precentage = ' + "{0:.2f}".format(self.passStudents*100/self.totalStudents) + "%")
             list.append((0,entry))
             list.append((1,[]))
             self.worksheet.bulkappend(list)
         else:
-            print("No result Found, Check your arguments")
+            print("\nNo result Found, Check your arguments")
 
 class extract:
     def __init__(self,dept):
@@ -199,7 +199,7 @@ def main(argv):
     elif opt in ("-o", "--output"):
         output = arg
     else:
-        print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>'')
+        print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>')
         sys.exit()
 
     obj=extract(int(dept))

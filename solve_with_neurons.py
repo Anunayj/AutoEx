@@ -56,9 +56,7 @@ def Solve(img_str):
         if w / h > 1.7:
             # This contour is too wide to be a single letter!
             # Split it in half into two letter regions!
-            half_width = int(w / 2)
-            letter_image_regions.append((x, y, half_width, h))
-            letter_image_regions.append((x + half_width, y, half_width, h))
+            return(False)
         else:
             # This is a normal letter by itself
             letter_image_regions.append((x, y, w, h))
