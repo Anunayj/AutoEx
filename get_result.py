@@ -11,24 +11,16 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 import sys, getopt
 import solve_with_neurons
-import progressbar
 
 
 executor = ThreadPoolExecutor(max_workers=200)
 
-class probar:
-    def __init__(self,maxvalue):
-        self.progress = 0
-        self.probar = progressbar.ProgressBar(max_value=maxvalue)
-    def increment(self):
-        self.progress = self.progress + 1
-        self.probar.update(self.progress)
 
 class processFile:
 
-    def __init__(self,filename):
+    def __init__(self,filename,email,rollPrefix):
         self.firstEntry=True
-        self.worksheet=opencsv.opencsv(filename)
+        self.worksheet=opencsv.opencsv(filename,email,rollPrefix)
         self.tables = {}
         self.numberOfColumns = False
         self.passStudents = 0
@@ -79,6 +71,7 @@ class processFile:
             list.append((1,[]))
             self.worksheet.bulkappend(list)
         else:
+            self.worksheet.isEmpty = True
             print("\nNo result Found, Check your arguments")
 
 class extract:
@@ -86,8 +79,8 @@ class extract:
         for temp in range(3):
             try:
                 #Some randmoness for both seesion Id and file name
-                randomness = randoh.randoo()
-                header={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.','Cookies':'ASP.NET_SessionId='+randomness}
+                self.randomness = randoh.randoo()
+                header={'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.','Cookies':'ASP.NET_SessionId='+self.randomness}
                 #initialize session
                 self.sess = requests.session()
                 self.sess.headers.update(header)
@@ -112,7 +105,7 @@ class extract:
             break
 
 
-    def getResult(self,roll,semester,file,rollSuffix,bar):
+    def getResult(self,roll,semester,file,rollSuffix):
         #get session and captcha
         resp=self.sess.get(self.url)
         soup = BeautifulSoup(resp.text,'html5lib')
@@ -137,26 +130,26 @@ class extract:
         resultFound='<td class="resultheader">'
         notFound='<script language=JavaScript>alert("Result for this Enrollment No. not Found");</script>'
         if resultFound in result.text:
-            bar.increment()
             file.processResult(result.text,rollSuffix)
             return(0)
         elif notFound in result.text:
-            bar.increment()
             return(0)
         else:
             return(1)
-    def driver(self,roll,semester,file,rollSuffix,bar):
+    def driver(self,roll,semester,file,rollSuffix):
         for retryNumber in range(10):
             try:
-                while self.getResult(roll,semester,file,rollSuffix,bar) is 1:
+                while self.getResult(roll,semester,file,rollSuffix) is 1:
                     pass
+
             except Exception as e:
                 print(e)
                 continue
             break
 
-    def loop(self,rollPrefix,totalStudents,semester,fileName):
+    def loop(self,rollPrefix,totalStudents,semester,email):
         #Validation and auto zfill
+
         if len(rollPrefix) == 10:
             x = 2
         elif len(rollPrefix) == 9:
@@ -170,41 +163,7 @@ class extract:
         if semester < 1 or semester > 8:
             print("Really, How many semester do you think you have?")
             sys.exit()
-
-        file=processFile(fileName)
-        bar = probar(totalStudents)
+        filename = self.randomness + '.csv'
+        file=processFile(filename,email,rollPrefix)
         for roll in range(1,totalStudents+1):
-            executor.submit(self.driver,rollPrefix+str(roll).zfill(x),semester,file,roll,bar)
-
-
-def main(argv):
-  prefixs=''
-  total=0
-  sem=1
-  output='output'
-  try:
-      opts, args = getopt.getopt(argv,"d:p:t:f:s:o:z:",["dept=","prefix=","total=","sem=","output="])
-  except getopt.GetoptError as p:
-      print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>')
-      sys.exit(2)
-  for opt, arg in opts:
-    if opt in ("-d", "--dept"):
-        dept = arg
-    elif opt in ("-p", "--prefix"):
-        prefixs = arg
-    elif opt in ("-t", "--total"):
-        total = arg
-    elif opt in ("-s", "--sem"):
-        sem = arg
-    elif opt in ("-o", "--output"):
-        output = arg
-    else:
-        print('AutoEx.py -d <DepartmentCode> -p <rollPrefix> -t <totalStudents> -s <semester> -o <fileName>')
-        sys.exit()
-
-    obj=extract(int(dept))
-    obj.loop(prefixs,int(total),int(sem),output)
-
-
-if __name__ == "__main__":
-   main(sys.argv[1:])
+            executor.submit(self.driver,rollPrefix+str(roll).zfill(x),semester,file,roll)
