@@ -36,18 +36,18 @@ class opencsv:
             message = MIMEMultipart()
             message["From"] = sender_email
             message["To"] = self.email
-            message["Subject"] = f"Your result for {self.roll} is here"
+            message["Subject"] = "Your result for " + {self.roll}+" is here"
             body = ""
             message.attach(MIMEText(body, "plain"))
+            encoders.encode_base64(part)
             with open(self.filename, "rb") as attachment:
                 # Add file as application/octet-stream
                 # Email client can usually download this automatically as attachment
                 part = MIMEBase("application", "octet-stream")
                 part.set_payload(attachment.read())
-            encoders.encode_base64(part)
             part.add_header(
                 "Content-Disposition",
-                f"attachment; filename= {self.roll}.csv",
+                "attachment; filename= "+{self.roll}+".csv",
                 )
             message.attach(part)
             text = message.as_string()
