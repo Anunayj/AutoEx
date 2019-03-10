@@ -4,3 +4,5 @@ tensorflow
 numpy
 opencv-python
 requests
+imutils
+sklearn
