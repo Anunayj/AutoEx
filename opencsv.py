@@ -1,19 +1,20 @@
 import os
 class opencsv:
-    def __init__(self,filename):
-        self.file = open(filename+".csv","a+")
+    def __init__(self):
+        #self.file = open(filename+".csv","a+")
+        self.file = ''
 
     def append(self,data):
         for entry in data:
-            self.file.write(entry)
+            self.file + entry
+
             if entry is data[-1]:
-                self.file.write("\n")
+                self.file + "\n"
             else:
-                self.file.write(",")
+                self.file+ ","
 
     def bulkappend(self,listoflists):
         for roll, lists in listoflists:
             self.append(lists)
-
-    def close(self):
-        self.file.close()
+    def getfile():
+        return self.file
