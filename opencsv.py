@@ -6,15 +6,17 @@ class opencsv:
 
     def append(self,data):
         for entry in data:
-            self.file + entry
+            self.file = self.file + entry
 
             if entry is data[-1]:
-                self.file + "\n"
+                self.file = self.file + "\n"
             else:
-                self.file+ ","
+                self.file = self.file+ ","
 
     def bulkappend(self,listoflists):
         for roll, lists in listoflists:
             self.append(lists)
-    def getfile():
+
+    def getcsv(self):
+        print(self.file)
         return self.file

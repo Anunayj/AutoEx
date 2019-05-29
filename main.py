@@ -9,7 +9,7 @@ import solve_with_neurons
 import opencsv
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
-
+import re
 #executor = ThreadPoolExecutor(max_workers=200)
 
 
@@ -135,7 +135,7 @@ class resultProcessor:
 
                 if resultFound in result.text:
                     self.progress.increment()
-                    self.processResult(result.text)
+                    self.processResult(result.text,roll)
                     return(0)
                 elif notFound in result.text:
                     self.progress.increment()
@@ -150,7 +150,7 @@ class resultProcessor:
                 break
         else:
             self.fail = True
-    def processResult(self,html):
+    def processResult(self,html,rollSuffix):
         list = []
         soup=BeautifulSoup(html,'html5lib')
         self.totalStudents = self.totalStudents + 1
@@ -162,8 +162,8 @@ class resultProcessor:
         if self.firstEntry is True:
             self.firstEntry=False
             header=[]
-            header.append("Name")
             header.append("Roll Number")
+            header.append("Name")
             for tableNumber in range(1,len(tables)):
                 header.append(tables[tableNumber].findAll('td')[0].text.replace("\n",'').strip())
             header.append("SGPA")
@@ -201,7 +201,7 @@ class resultProcessor:
             list.append((0,entry))
             list.append((1,[]))
             self.worksheet.bulkappend(list)
-            return(self.worksheet.getfile())
+            return(self.worksheet.getcsv())
         else:
             return(701) ## No result Found
 
