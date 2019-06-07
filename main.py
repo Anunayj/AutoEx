@@ -106,7 +106,7 @@ class resultProcessor:
         else:
             self.fail = True
     def getResult(self, roll):
-        for _ in range(3):
+        for _ in range(10):
             try:
                 #get session and captcha
                 resp=self.sess.get(self.url)

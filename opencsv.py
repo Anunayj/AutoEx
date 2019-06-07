@@ -18,5 +18,4 @@ class opencsv:
             self.append(lists)
 
     def getcsv(self):
-        print(self.file)
         return self.file
