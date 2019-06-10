@@ -18,9 +18,13 @@ def worker():
         obj[uuid][0].start()
 
 def janitor():
+<<<<<<< HEAD
     sleep(2700)
+=======
+    sleep(270000)
+>>>>>>> a1fe83f8847a0bdf1fa299a0d2c3206fd49f88cd
     for elements in obj:
-        if time() - elements[1] > 2700:
+        if time() - elements[1] > 270000:
             del elements
 
 class Project:
@@ -49,7 +53,11 @@ class Project:
         try:
             file = obj[uuid][0].package()
         except:
+<<<<<<< HEAD
             return("901 Resoruce Not Found/Deleted") #File Destoryed
+=======
+            return("901") #File Destoryed
+>>>>>>> a1fe83f8847a0bdf1fa299a0d2c3206fd49f88cd
         if file != 601:
             del obj[uuid]
 
@@ -58,6 +66,12 @@ class Project:
         #701: No result
         #500: Internal error
         return(str(file))
+<<<<<<< HEAD
+=======
+        # else:
+
+        pass
+>>>>>>> a1fe83f8847a0bdf1fa299a0d2c3206fd49f88cd
 
 
 if __name__ == '__main__':
@@ -65,4 +79,8 @@ if __name__ == '__main__':
     janitorThread = threading.Thread(target=janitor, name="Janitor")
     workerThread.start()
     janitorThread.start()
+<<<<<<< HEAD
     app.run(debug=False,port='8080')
+=======
+    app.run(debug=True,port='8080')
+>>>>>>> a1fe83f8847a0bdf1fa299a0d2c3206fd49f88cd
