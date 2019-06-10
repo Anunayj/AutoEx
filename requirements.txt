@@ -6,3 +6,5 @@ opencv-python
 requests
 imutils
 sklearn
+flask
+waitress

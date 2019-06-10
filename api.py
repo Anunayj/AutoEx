@@ -1,4 +1,5 @@
 from flask import Flask, request, abort, jsonify
+from waitress import serve
 from time import sleep, time
 import threading
 import main
@@ -65,4 +66,5 @@ if __name__ == '__main__':
     janitorThread = threading.Thread(target=janitor, name="Janitor")
     workerThread.start()
     janitorThread.start()
-    app.run(debug=False,port='8080')
+    serve(app, port=8080)
+    #app.run(debug=False,port='8080')
