@@ -53,7 +53,10 @@ class resultProcessor:
             self.zfill = 3
 
     def start(self):
-        self.sess, self.url = self.setCookie(self.department)
+        sessurl = self.setCookie(self.department)
+        if self.fail:
+            return()
+        self.sess, self.url = sessurl
         self.loop(wait=True)
 
     def loop(self,wait=False):
@@ -96,10 +99,11 @@ class resultProcessor:
 
                 url=resp.url
 
-                return (sess, url)
+                return((sess, url))
 
             except Exception as e:
                 print(e) # error on console
+                self.fail = True
                 continue
             else:
                 break
@@ -190,7 +194,7 @@ class resultProcessor:
     def package(self):
         if self.fail:
             return(500) # Internal server error
-        if self.maxroll != self.progress.progress:
+        if self.maxroll != self.progress.progress :
             return(601) ## Not 100% progress
         list = sorted(self.tables.items())
         if self.numberOfColumns:
