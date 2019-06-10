@@ -1,24 +1,26 @@
 from flask import Flask, request, abort, jsonify
 from time import sleep, time
 import threading
-import get_result_real
+import main
 import queue
 app = Flask(__name__)
 
-obj=[]
+obj={}
 queue=queue.Queue(maxsize=0)
 
-def worker:
+def worker():
     while True:
         try:
             uuid=queue.get()
+            print(uuid)
         except:
             pass
         obj[uuid][0].start()
-def janitor:
-    sleep(2700)
+
+def janitor():
+    sleep(270000)
     for elements in obj:
-        if time() - elements[1] > 2700:
+        if time() - elements[1] > 270000:
             del elements
 
 class Project:
@@ -28,9 +30,9 @@ class Project:
 
     @app.route('/requests', methods=['POST'])
     def requests():
-        request = (request.json['maxroll'],)
-        uuid = get_result_real.randomString()
-        obj[uuid] = [get_result_real.resultProcessor(request.json['department'], request.json['semester'], request.json['maxroll'], request.json['rollPrefix']), time()]
+        #request = (request.json['maxroll'],)
+        uuid = main.randomString()
+        obj[uuid] = [main.resultProcessor(int(request.json['department']), int(request.json['semester']), int(request.json['maxroll']), request.json['rollPrefix']), time()]
         queue.put(uuid)
         return(uuid)
 
@@ -39,23 +41,31 @@ class Project:
         uuid = request.args.get('uuid')
         try:
             return jsonify({"progress":obj[uuid][0].progress.progress, "max":obj[uuid][0].maxroll})
-        else:
-            return(901)
+        except:
+            return("901")
     @app.route('/getfile')
     def getfile():
         uuid = request.args.get('uuid')
         try:
             file = obj[uuid][0].package()
         except:
-            return(901) #File Destoryed
-        del obj[uuid]
-        if file in [500,701,601]
-            return(file)
+            return("901") #File Destoryed
+        if file != 601:
+            del obj[uuid]
+
+        # if file in [500,701,601]:
+        #601: In progress
+        #701: No result
+        #500: Internal error
+        return(str(file))
+        # else:
+
         pass
 
 
 if __name__ == '__main__':
-    app.run(debug=True,port='8080')
     workerThread = threading.Thread(target=worker, name="Worker")
     janitorThread = threading.Thread(target=janitor, name="Janitor")
-    thread.start()
+    workerThread.start()
+    janitorThread.start()
+    app.run(debug=True,port='8080')
