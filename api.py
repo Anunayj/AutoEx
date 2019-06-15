@@ -4,8 +4,10 @@ from time import sleep, time
 import threading
 import main
 import queue
+import json
+from flask_cors import CORS
 app = Flask(__name__)
-
+CORS(app)
 obj={}
 queue=queue.Queue(maxsize=0)
 
@@ -35,15 +37,21 @@ class Project:
         uuid = main.randomString()
         obj[uuid] = [main.resultProcessor(int(request.json['department']), int(request.json['semester']), int(request.json['maxroll']), request.json['rollPrefix']), time()]
         queue.put(uuid)
-        return(uuid)
+        response = app.response_class(
+        response=json.dumps({'uuid':uuid}),
+        status=200,
+        mimetype='application/json'
+        )
+        #response.headers['Access-Control-Allow-Origin'] = '*'
+        return(response)
 
     @app.route('/progress')
     def progress():
         uuid = request.args.get('uuid')
         try:
-            return jsonify({"progress":obj[uuid][0].progress.progress, "max":obj[uuid][0].maxroll})
+            return jsonify({"progress":obj[uuid][0].progress.progress, "max":obj[uuid][0].maxroll,"status":"200"})
         except:
-            return("901")
+            return jsonify({"progress":"0", "max":"0","status":"901"})
     @app.route('/getfile')
     def getfile():
         uuid = request.args.get('uuid')
@@ -54,11 +62,16 @@ class Project:
         if file != 601:
             del obj[uuid]
 
-        # if file in [500,701,601]:
+        if file in [500,701,601]:
+            status = file
+            file = ""
+        else:
+            status = 200
         #601: In progress
         #701: No result
         #500: Internal error
-        return(str(file))
+
+        return jsonify({"status":status,"file":str(file)})
 
 
 if __name__ == '__main__':
@@ -67,4 +80,4 @@ if __name__ == '__main__':
     workerThread.start()
     janitorThread.start()
     serve(app, port=8080)
-    #app.run(debug=False,port='8080')
+    #app.run(debug=True,port='8080')

@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+
+<html lang="en" dir="ltr">
+  <head>
+    <script src="pace.min.js"></script>
+    <link href="style.css" rel="stylesheet" />
+    <script src='http://ricostacruz.com/nprogress/nprogress.js'></script>
+    <link rel='stylesheet' href='http://ricostacruz.com/nprogress/nprogress.css'/>
+    <style media="screen">
+    @import url(https://fonts.googleapis.com/css?family=Roboto);
+        body,
+        input,
+        select,
+        textarea,
+        body * {
+        font-family: 'Roboto', sans-serif;
+        box-sizing: border-box;
+        }
+        body::after, body::before,
+        input::after,
+        input::before,
+        select::after,
+        select::before,
+        textarea::after,
+        textarea::before,
+        body *::after,
+        body *::before {
+        box-sizing: border-box;
+        }
+
+        body {
+        background-image: -webkit-linear-gradient(top, #f2f2f2, #e6e6e6);
+        background-image: linear-gradient(top, #f2f2f2, #e6e6e6);
+        }
+
+        h1 {
+        font-size: 2rem;
+        text-align: center;
+        margin: 0 0 2em;
+        }
+
+        .container {
+        position: relative;
+        max-width: 40rem;
+        margin: 5rem auto;
+        background: #fff;
+        width: 100%;
+        padding: 3rem 5rem 0;
+        border-radius: 1px;
+        }
+        .container::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+        -webkit-transform: scale(0.98);
+                transform: scale(0.98);
+        -webkit-transition: -webkit-transform 0.28s ease-in-out;
+        transition: -webkit-transform 0.28s ease-in-out;
+        transition: transform 0.28s ease-in-out;
+        transition: transform 0.28s ease-in-out, -webkit-transform 0.28s ease-in-out;
+        z-index: -1;
+        }
+        .container:hover::before {
+        -webkit-transform: scale(1);
+                transform: scale(1);
+        }
+
+        .button-container {
+        text-align: center;
+        }
+
+        fieldset {
+        margin: 0 0 3rem;
+        padding: 0;
+        border: none;
+        }
+
+        .form-radio,
+        .form-group {
+        position: relative;
+        margin-top: 2.25rem;
+        margin-bottom: 2.25rem;
+        }
+
+        .form-inline > .form-group,
+        .form-inline > .btn {
+        display: inline-block;
+        margin-bottom: 0;
+        }
+
+        .form-help {
+        margin-top: 0.125rem;
+        margin-left: 0.125rem;
+        color: #b3b3b3;
+        font-size: 0.8rem;
+        }
+        .checkbox .form-help, .form-radio .form-help, .form-group .form-help {
+        position: absolute;
+        width: 100%;
+        }
+        .checkbox .form-help {
+        position: relative;
+        margin-bottom: 1rem;
+        }
+        .form-radio .form-help {
+        padding-top: 0.25rem;
+        margin-top: -1rem;
+        }
+
+        .form-group input {
+        height: 1.9rem;
+        }
+        .form-group textarea {
+        resize: none;
+        }
+        .form-group select {
+        width: 100%;
+        font-size: 1rem;
+        height: 1.6rem;
+        padding: 0.125rem 0.125rem 0.0625rem;
+        background: none;
+        border: none;
+        line-height: 1.6;
+        box-shadow: none;
+        }
+        .form-group .control-label {
+        position: absolute;
+        top: 0.25rem;
+        pointer-events: none;
+        padding-left: 0.125rem;
+        z-index: 1;
+        color: #b3b3b3;
+        font-size: 1rem;
+        font-weight: normal;
+        -webkit-transition: all 0.28s ease;
+        transition: all 0.28s ease;
+        }
+        .form-group .bar {
+        position: relative;
+        border-bottom: 0.0625rem solid #999;
+        display: block;
+        }
+        .form-group .bar::before {
+        content: '';
+        height: 0.125rem;
+        width: 0;
+        left: 50%;
+        bottom: -0.0625rem;
+        position: absolute;
+        background: #337ab7;
+        -webkit-transition: left 0.28s ease, width 0.28s ease;
+        transition: left 0.28s ease, width 0.28s ease;
+        z-index: 2;
+        }
+        .form-group input,
+        .form-group textarea {
+        display: block;
+        background: none;
+        padding: 0.125rem 0.125rem 0.0625rem;
+        font-size: 1rem;
+        border-width: 0;
+        border-color: transparent;
+        line-height: 1.9;
+        width: 100%;
+        color: transparent;
+        -webkit-transition: all 0.28s ease;
+        transition: all 0.28s ease;
+        box-shadow: none;
+        }
+        .form-group input[type="file"] {
+        line-height: 1;
+        }
+        .form-group input[type="file"] ~ .bar {
+        display: none;
+        }
+        .form-group select,
+        .form-group input:focus,
+        .form-group input:valid,
+        .form-group input.form-file,
+        .form-group input.has-value,
+        .form-group textarea:focus,
+        .form-group textarea:valid,
+        .form-group textarea.form-file,
+        .form-group textarea.has-value {
+        color: #333;
+        }
+        .form-group select ~ .control-label,
+        .form-group input:focus ~ .control-label,
+        .form-group input:valid ~ .control-label,
+        .form-group input.form-file ~ .control-label,
+        .form-group input.has-value ~ .control-label,
+        .form-group textarea:focus ~ .control-label,
+        .form-group textarea:valid ~ .control-label,
+        .form-group textarea.form-file ~ .control-label,
+        .form-group textarea.has-value ~ .control-label {
+        font-size: 0.8rem;
+        color: gray;
+        top: -1rem;
+        left: 0;
+        }
+        .form-group select:focus,
+        .form-group input:focus,
+        .form-group textarea:focus {
+        outline: none;
+        }
+        .form-group select:focus ~ .control-label,
+        .form-group input:focus ~ .control-label,
+        .form-group textarea:focus ~ .control-label {
+        color: #337ab7;
+        }
+        .form-group select:focus ~ .bar::before,
+        .form-group input:focus ~ .bar::before,
+        .form-group textarea:focus ~ .bar::before {
+        width: 100%;
+        left: 0;
+        }
+
+        .checkbox label,
+        .form-radio label {
+        position: relative;
+        cursor: pointer;
+        padding-left: 2rem;
+        text-align: left;
+        color: #333;
+        display: block;
+        }
+        .checkbox input,
+        .form-radio input {
+        width: auto;
+        opacity: 0.00000001;
+        position: absolute;
+        left: 0;
+        }
+
+        .radio {
+        margin-bottom: 1rem;
+        }
+        .radio .helper {
+        position: absolute;
+        top: -0.25rem;
+        left: -0.25rem;
+        cursor: pointer;
+        display: block;
+        font-size: 1rem;
+        -webkit-user-select: none;
+           -moz-user-select: none;
+            -ms-user-select: none;
+                user-select: none;
+        color: #999;
+        }
+        .radio .helper::before, .radio .helper::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        margin: 0.25rem;
+        width: 1rem;
+        height: 1rem;
+        -webkit-transition: -webkit-transform 0.28s ease;
+        transition: -webkit-transform 0.28s ease;
+        transition: transform 0.28s ease;
+        transition: transform 0.28s ease, -webkit-transform 0.28s ease;
+        border-radius: 50%;
+        border: 0.125rem solid currentColor;
+        }
+        .radio .helper::after {
+        -webkit-transform: scale(0);
+                transform: scale(0);
+        background-color: #337ab7;
+        border-color: #337ab7;
+        }
+        .radio label:hover .helper {
+        color: #337ab7;
+        }
+        .radio input:checked ~ .helper::after {
+        -webkit-transform: scale(0.5);
+                transform: scale(0.5);
+        }
+        .radio input:checked ~ .helper::before {
+        color: #337ab7;
+        }
+
+        .checkbox {
+        margin-top: 3rem;
+        margin-bottom: 1rem;
+        }
+        .checkbox .helper {
+        color: #999;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1rem;
+        height: 1rem;
+        z-index: 0;
+        border: 0.125rem solid currentColor;
+        border-radius: 0.0625rem;
+        -webkit-transition: border-color 0.28s ease;
+        transition: border-color 0.28s ease;
+        }
+        .checkbox .helper::before, .checkbox .helper::after {
+        position: absolute;
+        height: 0;
+        width: 0.2rem;
+        background-color: #337ab7;
+        display: block;
+        -webkit-transform-origin: left top;
+                transform-origin: left top;
+        border-radius: 0.25rem;
+        content: '';
+        -webkit-transition: opacity 0.28s ease, height 0s linear 0.28s;
+        transition: opacity 0.28s ease, height 0s linear 0.28s;
+        opacity: 0;
+        }
+        .checkbox .helper::before {
+        top: 0.65rem;
+        left: 0.38rem;
+        -webkit-transform: rotate(-135deg);
+                transform: rotate(-135deg);
+        box-shadow: 0 0 0 0.0625rem #fff;
+        }
+        .checkbox .helper::after {
+        top: 0.3rem;
+        left: 0;
+        -webkit-transform: rotate(-45deg);
+                transform: rotate(-45deg);
+        }
+        .checkbox label:hover .helper {
+        color: #337ab7;
+        }
+        .checkbox input:checked ~ .helper {
+        color: #337ab7;
+        }
+        .checkbox input:checked ~ .helper::after, .checkbox input:checked ~ .helper::before {
+        opacity: 1;
+        -webkit-transition: height 0.28s ease;
+        transition: height 0.28s ease;
+        }
+        .checkbox input:checked ~ .helper::after {
+        height: 0.5rem;
+        }
+        .checkbox input:checked ~ .helper::before {
+        height: 1.2rem;
+        -webkit-transition-delay: 0.28s;
+                transition-delay: 0.28s;
+        }
+
+
+        .has-error .legend.legend, .has-error.form-group .control-label.control-label {
+        color: #d9534f;
+        }
+        .has-error.form-group .form-help,
+        .has-error.form-group .helper, .has-error.checkbox .form-help,
+        .has-error.checkbox .helper, .has-error.radio .form-help,
+        .has-error.radio .helper, .has-error.form-radio .form-help,
+        .has-error.form-radio .helper {
+        color: #d9534f;
+        }
+        .has-error .bar::before {
+        background: #d9534f;
+        left: 0;
+        width: 100%;
+        }
+
+        .button {
+        position: relative;
+        background: currentColor;
+        border: 1px solid currentColor;
+        font-size: 1.1rem;
+        color: #4f93ce;
+        margin: 3rem 0;
+        padding: 0.75rem 3rem;
+        cursor: pointer;
+        -webkit-transition: background-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+        transition: background-color 0.28s ease, color 0.28s ease, box-shadow 0.28s ease;
+        overflow: hidden;
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+        }
+        .button span {
+        color: #fff;
+        position: relative;
+        z-index: 1;
+        }
+        .button::before {
+        content: '';
+        position: absolute;
+        background: #071017;
+        border: 50vh solid #1d4567;
+        width: 30vh;
+        height: 30vh;
+        border-radius: 50%;
+        display: block;
+        top: 50%;
+        left: 50%;
+        z-index: 0;
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%) scale(0);
+                transform: translate(-50%, -50%) scale(0);
+        }
+        .button:hover {
+        color: #337ab7;
+        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+        }
+        .button:active::before, .button:focus::before {
+        -webkit-transition: opacity 0.28s ease 0.364s, -webkit-transform 1.12s ease;
+        transition: opacity 0.28s ease 0.364s, -webkit-transform 1.12s ease;
+        transition: transform 1.12s ease, opacity 0.28s ease 0.364s;
+        transition: transform 1.12s ease, opacity 0.28s ease 0.364s, -webkit-transform 1.12s ease;
+        -webkit-transform: translate(-50%, -50%) scale(1);
+                transform: translate(-50%, -50%) scale(1);
+        opacity: 0;
+        }
+        .button:focus {
+        outline: none;
+        }
+
+    </style>
+
+    <meta charset="utf-8">
+    <title>AutoEx- Get your result now!</title>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
+    <script src="http://malsup.github.com/jquery.form.js"></script>
+     <script>
+     var serverip = "https://127.0.0.1:8080"
+     var uuid;
+     var progress=0;
+     var intervalId
+     var Prefix;
+        $(document).ready(function() {
+            $('#Form').submit(function(e){
+              e.preventDefault();
+              $("#submit").prop("disabled", true)
+              $("#submit").prop("style", "color:gray")
+              NProgress.start();
+              var formData = new FormData(document.querySelector('form'))
+              if(formData.get('collegeCode') === "0"){
+                var collegecodereal = formData.get('collegeCode2')
+              }else{
+                var collegecodereal = "0" + formData.get('collegeCode')
+              }
+              Prefix = collegecodereal+ formData.get('branch') + formData.get('suffix')
+              var data =  {'department':formData.get('deptCode'),
+                          'semester':formData.get('semester'),
+                          'maxroll':formData.get('roll'),
+                          'rollPrefix':Prefix }
+
+              $.ajax({
+                  type: 'POST',
+                  async: true,
+                  url : serverip+'/requests', // or whatever
+                  data : JSON.stringify(data),
+                  dataType: 'json',
+                  headers: {
+                     'Accept': 'application/json',
+                     'Content-Type': 'application/json'
+                   },
+                  success : function (response) {
+                      uuid = response.uuid;
+                      intervalId = setInterval(progressLoop, 1000)
+
+                  },
+                  error: function(xhr, status, error) {
+                          alert("We were unable to entertain your request.. Looks like either the server is down or your internet is having some issues");
+                          resetButton();
+                        }
+
+              })
+                return false;
+          ;
+          }
+        );
+      });
+      function resetButton(){
+        $("#submit").prop("type", "submit")
+        $("#submit").prop("disabled", false)
+        $("#submit").prop("style", "color:#337ab7")
+        $("#submitText").prop("hidden", false)
+        $("#download").prop("hidden", true)
+        $("#submit").unbind()
+        NProgress.done();
+        progress=0
+      }
+      async function progressLoop(){
+
+          await getProgress()
+          if(progress === undefined){
+            alert("Looks like we are having some issues getting your request... Either the server discarded your request or There was a Internal server error, Please contact me for more information.");
+            resetButton();
+          }else{
+            NProgress.set((0.0864+progress*0.99)/1.08)
+            if(progress === 1){
+
+              clearInterval(intervalId)
+              result = await getResult()
+              console.log(result)
+              if(result.status ==701){
+                alert("No Result found, Check your arguments")
+                resetButton()
+              }else if(result.status != 200){
+                alert("Looks like we are having some issues getting your request... Either the server discarded your request or There was a Internal server error, Please contact me for more information.")
+                resetButton()
+              }else{
+                setDownloadButton()
+              }
+              NProgress.done()
+            }
+
+          }
+
+      }
+      function setDownloadButton(){
+
+        $("#submit").prop("type", "button")
+        $("#submit").prop("disabled", false)
+        $("#submit").click(buttonOnClick)
+        $("#submit").prop("style", "color:#1faa00")
+        $("#submitText").prop("hidden", true)
+        $("#download").prop("hidden", false)
+
+      }
+      function buttonOnClick(){
+        NProgress.start()
+        download(Prefix+".csv",result.file)
+        setTimeout(resetButton,1500)
+
+      }
+
+
+     async function getResult(){
+        return($.get(
+            serverip+"/getfile",
+            {'uuid' : uuid},
+            function(data) {
+              return(data);
+            }
+        ));
+      }
+      async function getProgress(){
+        $.get(
+            serverip+"/progress",
+            {'uuid' : uuid},
+            function(data) {
+                if(data.status != "200"){
+                  progress = undefined;
+                }
+                progress = (data.progress/data.max);
+               }
+             )
+            }
+
+      function download(filename, text) {
+        var element = document.createElement('a');
+        element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(text));
+        element.setAttribute('download', filename);
+
+        element.style.display = 'none';
+        document.body.appendChild(element);
+
+        element.click();
+
+        document.body.removeChild(element);
+      }
+
+    </script>
+   </head>
+  <body>
+
+    <div class="container">
+      <form name = "Form" id="Form">
+        <h2>Heyo! Don't feel like wasting your time? Get your result in a fully fledged spreadsheet here:</h2>
+        <div class="form-group">
+          <select id="deptCode" name="deptCode">
+            <option value="0">B.E.</optiYou can't change the type of an element like that, instead you have to create a new element and move the contents into it. Example:on>
+            <option value="1">B. Tech.
+            <option value="2">M.C.A</option>
+            <option value="3">B. Pharm</option>
+            <option value="4">B. Arch</option>
+            <option value="5">M. Pharm..</option>
+            <option value="6">M.E..</option>
+            <option value="7">M. Tech.</option>
+            <option value="8">B.E. (PTDC)</option>
+            <option value="9">M. Tech. (PT)</option>
+            <option value="10">MAM</option>
+            <option value="11">MCA (DD)</option>
+            <option value="12">Diploma</option>
+            <option value="12">Diploma</option>
+          </select>
+          <label for="select" class="control-label">Select Department<font color="red">*</font></label><i class="bar"></i>
+        </div>
+
+
+        <div class="form-group">
+          <select id="collegeCode" name="collegeCode" onchange="custom()">
+            <option value="0" selected> Custom, I know the college code!</option>
+            <option value="171">Acropolis Institute of Tech & Research, Bhopal ( 2007 )</option>
+            <option value="827">Acropolis Institute of Tech & Research, Indore (2005)</option>
+            <option value="307">Aditya College of Tech. & Sc., Satna (2007)</option>
+            <option value="528">AGNOS College of Technology</option>
+            <option value="544">AISECT Institute of Science &Technology</option>
+            <option value="172">All Saints College of Engineering, Bhopal (2007)</option>
+            <option value="116">All Saints College of Technology, Bhopal (2002)</option>
+            <option value="713">Alpine Institute of Tech., Ujjain (2007)</option>
+            <option value="831">Astral Institute o''f Technology & Res, Indore (2006)</option>
+            <option value="608">Babulal Tarabai Inst. of Research & Tech, Sironga, Distt. Sagar(2008)</option>
+            <option value="525">Bagula Mukhi College of Technology</option>
+            <option value="127">Bansal College of Engg,Mandideep (2002)</option>
+            <option value="173">Bansal Inst. of Research & Tech., Bhopal (2007)</option>
+            <option value="112">Bansal Institute of Sc. & Tech., Bhopal (2000)</option>
+            <option value="504">Bhabha College of Engg., Bhopal (2008)</option>
+            <option value="129">Bhabha Engg. Research Institute, Bhopal (2003)</option>
+            <option value="924">Bhartiya Vidya Mandir College of Tech & Mgmt., Gwalior (2004)</option>
+            <option value="174">Bhopal Inst. of Technology, Bhopal (2007)</option>
+            <option value="539">Bhopal Institute of Technology & Mgmt</option>
+            <option value="124">Bhopal Institute of Technology & Science, Bangrasia</option>
+            <option value="850">BM College of Tech., Indore (2007)</option>
+            <option value="819">Central India Institute of Technology, Indore (2004)</option>
+            <option value="832">Chameli Devi Institute of Technology & Management, Indore(2006)</option>
+            <option value="502">Corporate Inst. of Science & Tech., Bhopal (2008)</option>
+            <option value="175">Crescent College of Tech., Bhopal (2007)</option>
+            <option value="507">Gargi Inst. of Sc. & Tech., Bhopal (2008)</option>
+            <option value="535">Girdhar Shiksh Evam Samaj Kalyan Samiti Group of Institute</option>
+            <option value="870">Global Inst. of Engg. & Sc., Sendhwa (2008)</option>
+            <option value="130">Globus Engg College,Bhopal (2003)</option>
+            <option value="202">Guru Ramdas Khalsa Insti of Sc. & Technology, Jabalpur (1997)</option>
+            <option value="916">Gwalior Engg. College,Gwalior (2003)</option>
+            <option value="927">Gwalior Institute of Technology & Science, Shivpuri, Gwalior(</option>
+            <option value="208">Gyan Ganga College of Technology, Jabalpur (2006)</option>
+            <option value="176">Gyan Ganga Inst of Tech & Management(GGITM), Bhopal (2007)</option>
+            <option value="206">Gyan Ganga Institute of Technology, Jabalpur (2003)</option>
+            <option value="203">Hitkarni College of Engg. Tech., Jabalpur (1997)</option>
+            <option value="177">IES College of Technology, Bhopal (2007)</option>
+            <option value="526">IES Institute of Technology & Management</option>
+            <option value="818">Indore Inst. of Sc. & Tech. Dehri Distt., Indore (2003)</option>
+            <option value="601">Indra Ghandhi Engg. College, (IGEC) Sagar (1981)</option>
+            <option value="610">Infinity Mgmt. & Engg. College, Patharia Jat Sagar (2008)</option>
+            <option value="915">Institute of Information Technology & Management, Gwalior(2002)</option>
+            <option value="905">Institute of Technology & Mgmt., Gwalior (1997)</option>
+            <option value="928">IPS College of Technology & Mgmt., Gwalior (2007)</option>
+            <option value="201">Jabalpur Engg. College(JEC), Jabalpur (1947)</option>
+            <option value="833">Jagadguru Dattatray College of Tech, (JDCT), Indore (2006)</option>
+            <option value="178">Jai Narain College of Tech & Sc, (JNCTS) Bhopal (2007)</option>
+            <option value="131">Jai Narain College of Tech(JNCT), Bhopal (2003)</option>
+            <option value="805">Jawaharlal Institute of Tech.,Khargone (1997)</option>
+            <option value="306">Jawaharlal Nehru College of Tech., REWA (2007)</option>
+            <option value="506">Kailash Chandra Bansal College of Technology , Bhopal (2008)</option>
+            <option value="505">Kailash Narayan Patidar College of Sc. & Tech. (KNPCST), Bhopal(2008)</option>
+            <option value="834">KCB Technical Academy, Indore (2006)</option>
+            <option value="538">Kopal Institue of Science & Technology</option>
+            <option value="217">Lakshmi Narain College of Technology, (LNCT), Jabalpur (2008)</option>
+            <option value="103">Lakshmi Narain College of Technology(LNCT) Bhopal(1994)</option>
+            <option value="716">Late Ramoti Devi Ist. of Engg., Ujjain (2008)</option>
+            <option value="157">Laxmi Narayan College of Technology & Sc., Bhopal (2006)</option>
+            <option value="820">Laxmi Narayan College of Technology, Indore (2004)</option>
+            <option value="931">Laxmi Narayan Institute of Technology, (LNIT), Gwalior (2008)</option>
+            <option value="215">Laxmibai Sahuji Inst. of Engg. & Tech., Jabalpur (2008)</option>
+            <option value="510">Laxmipati Inst. of Sc. & Tech.(LIST), Bhopal (2008)</option>
+            <option value="835">Lord Krishna College of Tech., Indore (2006)</option>
+            <option value="930">Maa Kailadesubmitvi Inst. of Information Tech., Gwalior (2008)</option>
+            <option value="530">Madhav Proudyogiki Mahavidyalay</option>
+            <option value="714">Mahakal Institute Tech & Mgmt. Ujjain (2007)</option>
+            <option value="712">Mahakal Institute Tech & Sc., Ujjain (2006)</option>
+            <option value="704">Mahakal Instute of Technology,Ujjain (2001)</option>
+            <option value="903">Maharana Pratap College of Tech., Gwalior (1996)</option>
+            <option value="851">Mahatma Gandhi Inst. of Engg. & Mgmt., Indore (2007)</option>
+            <option value="543">Malhotra Technical Research Institute</option>
+            <option value="862">Malwa Inst. of Sc. & Technology, Limbod Gari, Distt., Indore(2008)</option>
+            <option value="821">Malwa Institute of Technology, Indore (2004)</option>
+            <option value="702">Mandsaur Institute of Tech.,Mandsaur (1996)</option>
+            <option value="529">Mansarover Institute of Science & Technology</option>
+            <option value="852">Mathura Devi Inst. of Tech. & Mgmt., Indore (2007)</option>
+            <option value="534">Maxim Institute of Technology</option>
+            <option value="812">Medicaps Inst. of Sc. & Tech., Indore (2009)</option>
+            <option value="179">Millenium Institute of Tech. & Sc., Bhopal (2007)</option>
+            <option value="540">Millenium Instttute of Technology</option>
+            <option value="180">Mittal Inst. of Tech., Bhopal (2007)</option>
+            <option value="917">Nagaji Inst. of Tech. & Mgmt., Gwalior (2003)</option>
+            <option value="511">NRI Inst. of Res. & Tech., Bhopal (2008)</option>
+            <option value="115">NRI Institute of Information Sc. & Tech., Bhopal (2001)</option>
+            <option value="914">NRI Institute of Tech. & Mgmt., Gwalior (2002)</option>
+            <option value="607">Ojaswini Inst. of Management & Tech., (OIMT) Damoh (2007)</option>
+            <option value="611">Ojaswini Women Mgmt. & Engg. College, Patharia Jat, Sagar(2007)</option>
+            <option value="853">Oriantal Institute of Sc & Technology, Indore (2007)</option>
+            <option value="218">Oriental Engg. College, Andhua, Distt., Jabalpur (2008)</option>
+            <option value="222">Oriental Inst. of Sc. & Tech., Andhua, Distt., Jabalpur (2008)</option>
+            <option value="105">Oriental Institue of Science & Technology (OIST), Bhopal(1995)</option>
+            <option value="128">Patel College of Sc. & Technology, Bhopal (2002)</option>
+            <option value="828">Patel College of Sc. & Technology, Indore (2005)</option>
+            <option value="509">Patel Institute of Engg. & Sc., Bhopal (2008)</option>
+            <option value="181">Patel Institute of Technology, Bhopal (2007)</option>
+            <option value="182">Peoples College of Resc., & Tech., Bhopal (2007)</option>
+            <option value="715">Prashanti Inst. of Tech. & Science, Ujjain (2008)</option>
+            <option value="863">Prestige Inst. of Eng. & Sc., Indore (2008)</option>
+            <option value="854">Priyatam Institute of Tech., & Sc., Indore (2007)</option>
+            <option value="183">Radha Raman Inst. of Resc., & Tech., Bhopal (2007)</option>
+            <option value="158">Radharaman Engg. College, Bhopal (2006)</option>
+            <option value="132">Radharaman Institute of Tech., & Sc., Bhopal (2003)</option>
+            <option value="184">Rajeev Gandhi Prodyogiki Mahavidhyalaya-2, Bhopal (2007)</option>
+            <option value="159">Rajeev Gandhi Prodyogiki Mahavidhyalaya, Bhopal (2006)</option>
+            <option value="301">Rewa Engg. College,Rewa (1964)</option>
+            <option value="303">Rewa Institute of Tech., Hazur Distt.,Rewa (2003)</option>
+            <option value="817">Rishiraj Institute of Technology, Indore (2002)</option>
+            <option value="156">RKDF College of Engg., Bhopal (2006)</option>
+            <option value="512">RKDF College of Tech. & Res., Bhopal (2008)</option>
+            <option value="527">RKDF College of Technology</option>
+            <option value="104">RKDF Institute of Science & Technology, Bhopal (1995)</option>
+            <option value="855">RKDF School of Engg., Indore (2005)</option>
+            <option value="836">Royal College of Technology, Indore (2006)</option>
+            <option value="185">Rukmani Devi Institute of Sc. & Tech., Bhopal (2007)</option>
+            <option value="902">Rustamji Institute of Technology (RIT), Tekanpur (1999)</option>
+            <option value="186">Sagar Inst. of Resc. Tech & Sc. (SIRTS), Bhopal (2007)</option>
+            <option value="133">Sagar Inst. of Research & Tech., (SIRT) Bhopal (2003)</option>
+            <option value="187">Sagar Inst. of Sc. & Tech. Bhopal (2007)</option>
+            <option value="501">Sagar Institute of Research & Technology Excellence</option>
+            <option value="536">Sagar Institute of Science Technology & Engg</option>
+            <option value="537">Sagar Institute of Science Technology & Research</option>
+            <option value="188">SAM College of Engg. & Tech.(SAMCET), Bhopal (2007)</option>
+            <option value="108">Samrat Ashok Tech. Institute, (SATI), Vidisha (1960)</option>
+            <option value="861">Sanghvi Inovative Acadamy, Indore (2008)</option>
+            <option value="837">Sanghvi Institute of Management & Science, Rau, Indore (2006)</option>
+            <option value="219">Saraswati Inst. of Engg. & Tech., Jabalpur (2008)</option>
+            <option value="542">Satyam Edu. & Social Welfare Society Group of Inst.</option>
+            <option value="121">SCOPE College of Engg., Bhopal (2005)</option>
+            <option value="216">SGBM Inst. of Tech. & Sc.,Bineke, Distt., Jabalpur (2008)</option>
+            <option value="532">Sha-Shib College of Technology</option>
+            <option value="856">Shiv Kumar Singh Inst. of Tech.& Sc., Indore (2007)</option>
+            <option value="125">Shree Institute of Technology and Science</option>
+            <option value="545">Shri Balaji Institute of Technology & Mgmt</option>
+            <option value="904">Shri Ram College of Engg. & Mgt. ,Banmore (1998)</option>
+            <option value="541">Shri Ram College of Technology</option>
+            <option value="929">Shri Ram Inst. of Information Tech., Gwalior (2007)</option>
+            <option value="213">Shri Ram Inst. of Sc. & Tech., Jabalpur (2007)</option>
+            <option value="205">Shri Ram Institute of Tech., Jabalpur (2001)</option>
+            <option value="913">Shri Rawatpura Sarkar Institute of Technology, Datia (2002)</option>
+            <option value="802">Shri Vaishnav Instt. of Tech. & Sc., Indore (1995)</option>
+            <option value="838">Shri Venkateshwar Institute of Technology, Indore (2006)</option>
+            <option value="548">Sparta Institute of Technology & Management</option>
+            <option value="823">Sri Dadaji Inst. of tech. & Sc., Khandawa (2004)</option>
+            <option value="189">Sri Satya Sai College of Engg. Bhopal (2007)</option>
+            <option value="109">Sri Satya Sai Institute of Sc. & Tech.,Sehore (1999)</option>
+            <option value="857">Star Academy of Tech & Management, Indore (2007)</option>
+            <option value="508">Surabhi College of Engg. & Tech., Bhopal (2008)</option>
+            <option value="547">Surabhi Group of Institution</option>
+            <option value="829">Sushila Devi Bansal College of Technology (SDBCT), Indore(2005)</option>
+            <option value="822">Swami Vivekanand College of Engg., Indore (2004)</option>
+            <option value="160">Swami Vivekanand College of Sc & Tech, Bhopal (2006)</option>
+            <option value="609">Swami Vivekanand Inst. of Tech., Sagar (2008)</option>
+            <option value="207">Takshshila Institute of Engineering & Technology, Jabalpur(2004)</option>
+            <option value="191">Technocrats Institute of Tech. (Excellence), Bhopal (2007)</option>
+            <option value="192">Technocrats Institute of Tech. & Sc., Bhopal (2007)</option>
+            <option value="111">Technocrats Institute of Technology, Bhopal (2000)</option>
+            <option value="126">Thakral College of Technology, Bhopal (2002)</option>
+            <option value="199">TIT College, Bhopal (2008)</option>
+            <option value="198">Trinity Inst. of Tech. & Research, Bhopal (2008)</option>
+            <option value="830">Truba College of Engg. & Technology, Indore (2005)</option>
+            <option value="533">Truba College of Science and Technology</option>
+            <option value="114">Truba Institute of Engg. & Information Tech., Bhopal (2001)</option>
+            <option value="701">Ujjain Engg College, (UEC), Ujjain (1966)</option>
+            <option value="101">University Institue of Technology(UIT),RGPV Bhopal(1986)</option>
+            <option value="546">Vaishnavi Institute of Technology and Science</option>
+            <option value="190">Vedica Institute of Technology, Bhopal (2007)</option>
+            <option value="531">Vidyapeeth Institute of Science and Technology</option>
+            <option value="858">Vikrant Institute of Tech. & Mgmt., Indore (2007)</option>
+            <option value="839">Vindhya Institute of Tech. & Sc., Indore (2006)</option>
+            <option value="214">Vindhya Institute of Tech. & Sc., Jabalpur (2007)</option>
+            <option value="302">Vindhya Institute of Tech. & Sc.,Satna (2002)</option>
+            <option value="161">VNS Institute of Technology, Bhopal (2006)</option>
+          </select>
+          <label for="select" class="control-label">Select College <font color="red">*</font></label><i class="bar"></i>
+        </div>
+        <div class="form-group">
+          <input type="text" pattern="\d*" id="collegeCode2" name="collegeCode2" value="0133" minlength="3" maxlength="4"/>
+          <label for="input" class="control-label" id="code-label">College Code</label><i class="bar"></i>
+          <font size="1" color="gray"><i>For example in <b>0133</b>CE173D01, the first 4 digits are the college code.</i></font>
+        </div>
+
+        <script>
+        function custom() {
+            if(document.getElementById('collegeCode').value == "0") {
+              document.getElementById('collegeCode2').disabled = false;
+              document.getElementById('collegeCode2').required = true;
+              document.getElementById('code-label').innerHTML = "College Code";
+
+            }else{
+              document.getElementById('collegeCode2').disabled = true;
+              document.getElementById('collegeCode2').required = false;
+              document.getElementById('collegeCode2').value = '0' + document.getElementById('collegeCode').value;
+              document.getElementById('code-label').innerHTML = '0' + document.getElementById('collegeCode').value;
+
+        }
+      }
+        </script>
+
+        <div class="form-group">
+          <input type="text" id="branch" name="branch" minlength="2" maxlength="2" required/>
+          <label for="input" class="control-label">Branch Code: <font color="red">*</font></label><i class="bar"></i>
+          <font size="1" color="gray"><i>For example in 0133<b>CE</b>173D01, the next 2 (CE) digits are the Branch code.</i></font>
+        </div>
+
+        <div class="form-group">
+          <input type="text" id="suffix" name="suffix" minlength="3" maxlength="4" required/>
+          <label for="input" class="control-label">Suffix: <font color="red">*</font></label><i class="bar"></i>
+          <font size="1" color="gray"><i>For example in 0133CE<B>173D</B>01, the next 3 or 4 (173D) digits are part of the suffix, while in 0133CS<b>161</b>01 (161) is the suffix</i></font>
+        </div>
+
+        <div class="form-group">
+          <input type="number" id="roll" name="roll" max="300" min="1" required/>
+          <label for="input" class="control-label">Total Students: <font color="red">*</font></label><i class="bar"></i>
+          <font size="1" color="gray"><i>This refers to the last Roll Number, not the actual number of students. For example if 0133CE171<b>120</b> is the last student, 120 is the total students.</i></font>
+        </div>
+
+
+
+
+        <div class="form-group">
+          <select id="semester" name="semester">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+
+
+
+          </select>
+
+          <label for="select" class="control-label">Semester: <font color="red">*</font></label><i class="bar"></i>
+        </div>
+
+        <!-- <div class="form-group">
+          <input type="email" id="email" name="email" required/>
+          <label for="input" class="control-label">Email: <font color="red">*</font></label><i class="bar"></i>
+          <font size="1" color="gray"><i>Don't Worry! We are not gonna spam you with emails, maybe..., though we are gonna send the result there.</i></font>
+        </div> -->
+
+      <div class="button-container">
+        <button type="submit" class="button" name = "submit" id="submit"><span id="submitText" name="submitText">Submit it!</span><span name="download" id="download" hidden = "true">Download!</span></button>
+      </div>
+    </form>
+    </div>  </body>
+</html>
