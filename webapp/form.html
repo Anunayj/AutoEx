@@ -424,7 +424,7 @@
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7/jquery.js"></script>
     <script src="http://malsup.github.com/jquery.form.js"></script>
      <script>
-     var serverip = "http://127.0.0.1:8080"
+     var serverip = "http://anunay.dlinkddns.com:8080"
      var uuid;
      var progress=0;
      var intervalId
@@ -486,15 +486,16 @@
       async function progressLoop(){
 
           await getProgress()
-          if(progress === undefined){
+          result = await getResult()
+          if(progress === undefined || (result.status == 500) || (result.status == 901)){
             alert("Looks like we are having some issues getting your request... Either the server discarded your request or There was a Internal server error, Please contact me for more information.");
             resetButton();
           }else{
             NProgress.set((0.0864+progress*0.99)/1.08)
-            if(progress === 1){
+            if(progress === 1 || result.status == 701 || result.status == 200){
 
               clearInterval(intervalId)
-              result = await getResult()
+
               console.log(result)
               if(result.status ==701){
                 alert("No Result found, Check your arguments")
@@ -539,6 +540,7 @@
         ));
       }
       async function getProgress(){
+
         $.get(
             serverip+"/progress",
             {'uuid' : uuid},

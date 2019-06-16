@@ -138,8 +138,8 @@ class resultProcessor:
                 notFound='<script language=JavaScript>alert("Result for this Enrollment No. not Found");</script>'
 
                 if resultFound in result.text:
-                    self.progress.increment()
                     self.processResult(result.text,roll)
+                    self.progress.increment()
                     return(0)
                 elif notFound in result.text:
                     self.progress.increment()
