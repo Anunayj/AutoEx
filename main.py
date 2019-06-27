@@ -10,15 +10,17 @@ import opencsv
 from concurrent.futures import ThreadPoolExecutor
 from time import sleep
 import re
+import threading
 #executor = ThreadPoolExecutor(max_workers=200)
-
 
 
 class probar:
     def __init__(self):
+        self.lock = threading.Lock()
         self.progress = 0
     def increment(self):
-        self.progress = self.progress + 1
+        with self.lock:
+            self.progress = self.progress + 1
 
 
 
@@ -33,6 +35,7 @@ class resultProcessor:
     def __init__(self, department, semester, maxroll, rollPrefix):
 
         #save all args as class variables
+        lock = threading.Lock()
         self.progress = probar()
         self.department = department
         self.fail = False # Tracks if Script failed somewhere, returns Internal error if so.
@@ -157,37 +160,43 @@ class resultProcessor:
     def processResult(self,html,rollSuffix):
         list = []
         soup=BeautifulSoup(html,'html5lib')
-        self.totalStudents = self.totalStudents + 1
+        with self.lock:
+            self.totalStudents = self.totalStudents + 1
+
         name=soup.find('td',text=re.compile("Name")).findNext().text.replace("\n",'').strip()
         roll=soup.find('td',text=re.compile("Roll")).findNext().text.replace("\n",'').strip()
-        list.append(roll)
-        list.append(name)
+        with self.lock:
+            list.append(roll)
+            list.append(name)
         tables=soup.findAll("table")[0].findAll("table")[2].findAll("tr")[6].findAll("table")
-        if self.firstEntry is True:
-            self.firstEntry=False
-            header=[]
-            header.append("Roll Number")
-            header.append("Name")
-            for tableNumber in range(1,len(tables)):
-                header.append(tables[tableNumber].findAll('td')[0].text.replace("\n",'').strip())
-            header.append("SGPA")
-            header.append("CGPA")
-            header.append("Result Decision")
-            self.tables[0] = header
-            self.numberOfColumns = len(header)
+        with self.lock:
+            if self.firstEntry is True:
+                self.firstEntry=False
+                header=[]
+                header.append("Roll Number")
+                header.append("Name")
+                for tableNumber in range(1,len(tables)):
+                    header.append(tables[tableNumber].findAll('td')[0].text.replace("\n",'').strip())
+                header.append("SGPA")
+                header.append("CGPA")
+                header.append("Result Decision")
+                self.tables[0] = header
+                self.numberOfColumns = len(header)
 
 
         for tableNumber in range(1,len(tables)):
             list.append(tables[tableNumber].findAll('td')[3].text.replace("\n",'').replace("##","*").strip())
         result_des=soup.find("th", text=re.compile(".*CGPA.*")).parent.findNext("td")
         if(result_des.text.replace("\n",'').strip() == "PASS" or result_des.text.replace("\n",'').strip() == "PASS WITH GRACE"):
-            self.passStudents = self.passStudents + 1
+            with self.lock:
+                self.passStudents = self.passStudents + 1
         SGPA=result_des.findNext("td")
         CGPA=SGPA.findNext("td")
         list.append(SGPA.text.replace("\n",'').strip())
         list.append(CGPA.text.replace("\n",'').strip())
         list.append('"'+result_des.text.replace("\n",'').strip()+'"')
-        self.tables[int(rollSuffix)] = list
+        with self.lock:
+            self.tables[int(rollSuffix)] = list
 
 
 
