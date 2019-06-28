@@ -35,7 +35,7 @@ class resultProcessor:
     def __init__(self, department, semester, maxroll, rollPrefix):
 
         #save all args as class variables
-        lock = threading.Lock()
+        self.lock = threading.Lock()
         self.progress = probar()
         self.department = department
         self.fail = False # Tracks if Script failed somewhere, returns Internal error if so.
