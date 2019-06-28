@@ -6,6 +6,8 @@ import main
 import queue
 import json
 from flask_cors import CORS
+import sys
+
 app = Flask(__name__)
 CORS(app)
 obj={}
@@ -79,5 +81,5 @@ if __name__ == '__main__':
     janitorThread = threading.Thread(target=janitor, name="Janitor")
     workerThread.start()
     janitorThread.start()
-    serve(app, port=80)
+    serve(app, port=sys.argv[1])
     #app.run(debug=True,port='8080')
