@@ -1,1 +1,1 @@
-web: waitress-serve --port=8080 api:app
+web: waitress-serve --port=80 api:app

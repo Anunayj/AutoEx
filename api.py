@@ -79,5 +79,5 @@ if __name__ == '__main__':
     janitorThread = threading.Thread(target=janitor, name="Janitor")
     workerThread.start()
     janitorThread.start()
-    serve(app, port=8080)
+    serve(app, port=80)
     #app.run(debug=True,port='8080')

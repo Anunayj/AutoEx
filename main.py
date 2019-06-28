@@ -63,7 +63,7 @@ class resultProcessor:
         self.loop(wait=True)
 
     def loop(self,wait=False):
-        with ThreadPoolExecutor(max_workers=200) as executor:
+        with ThreadPoolExecutor(max_workers=40) as executor:
             for roll in range(1,self.maxroll+1):
                 executor.submit(self.tryandfail,roll)
             executor.shutdown(wait=wait)
