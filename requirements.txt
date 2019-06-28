@@ -9,3 +9,4 @@ sklearn
 flask
 flask-cors
 waitress
+html5lib
