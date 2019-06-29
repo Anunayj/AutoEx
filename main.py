@@ -144,18 +144,19 @@ class resultProcessor:
 
                 #process data
                 resultFound='<td class="resultheader">'
-                notFound='<script language=JavaScript>alert("Result for this Enrollment No. not Found");</script>'
+                wrong='<script language="JavaScript">alert("you have entered a wrong text");</script>'
 
                 if resultFound in result.text:
                     print("started")
                     self.processResult(result.text,roll)
                     self.progress.increment()
                     return(0)
-                elif notFound in result.text:
+                elif wrong in result.text:
+                    return(1)
+                else:
                     self.progress.increment()
                     return(0)
-                else:
-                    return(1)
+                
             except Exception as e:
                 print(e)
                 self.fail = True
