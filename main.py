@@ -19,10 +19,8 @@ class probar:
         self.lock = threading.Lock()
         self.progress = 0
     def increment(self):
-        print("tried")
         with self.lock:
             self.progress = self.progress + 1
-        print("wtffff")
 
 
 
