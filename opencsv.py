@@ -10,7 +10,6 @@ class opencsv:
         with self.lock:
             for entry in data:
                 self.file = self.file + entry
-
                 if entry is data[-1]:
                     self.file = self.file + "\n"
                 else:
