@@ -118,11 +118,13 @@ class resultProcessor:
         for _ in range(10):
             try:
                 #get session and captcha
-                resp=self.sess.get(self.url)
+                with self.lock:
+                    resp=self.sess.get(self.url)
                 soup = BeautifulSoup(resp.text,'html5lib')
                 imageURL="http://result.rgpv.ac.in/Result/"+soup.findAll('img')[1]['src']
                 #randomness = randoh.randoo()
-                cap = self.sess.get(imageURL, allow_redirects=True)
+                with self.lock:
+                    cap = self.sess.get(imageURL, allow_redirects=True)
 
                 #solve the Captcha
                 solution = solve_with_neurons.Solve(cap.content)
@@ -136,7 +138,8 @@ class resultProcessor:
                 #Post the data
                 fullroll = self.rollPrefix + str(roll).zfill(self.zfill)
                 postdata = {'__EVENTTARGET':'','__EVENTARGUMENT':'','__LASTFOCUS':'','__VIEWSTATE':viewState,'__VIEWSTATEGENERATOR':viewStateGen,'__EVENTVALIDATION':EvenValidation,'ctl00$ContentPlaceHolder1$txtrollno':fullroll,'ctl00$ContentPlaceHolder1$drpSemester':str(self.semester),'ctl00$ContentPlaceHolder1$rbtnlstSType':'G','ctl00$ContentPlaceHolder1$TextBox1':solution,'ctl00$ContentPlaceHolder1$btnviewresult':'View Result'}
-                result=self.sess.post(self.url,data=postdata, allow_redirects=True)
+                with self.lock:
+                    result=self.sess.post(self.url,data=postdata, allow_redirects=True)
 
                 #process data
                 resultFound='<td class="resultheader">'
