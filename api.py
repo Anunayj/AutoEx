@@ -59,8 +59,9 @@ class Project:
         uuid = request.args.get('uuid')
         try:
             file = obj[uuid][0].package()
-        except:
-            return("901 Resoruce Not Found/Deleted") #File Destoryed
+        except Exception as e:
+            print(e)
+            return("901 Resoruce Not Found/Deleted" + e) #File Destoryed
         # if file != 601:
         #     del obj[uuid]
 
