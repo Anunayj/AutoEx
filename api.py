@@ -61,8 +61,8 @@ class Project:
             file = obj[uuid][0].package()
         except:
             return("901 Resoruce Not Found/Deleted") #File Destoryed
-        if file != 601:
-            del obj[uuid]
+        # if file != 601:
+        #     del obj[uuid]
 
         if file in [500,701,601]:
             status = file
