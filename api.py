@@ -61,7 +61,7 @@ class Project:
             file = obj[uuid][0].package()
         except Exception as e:
             print(e)
-            return("901 Resoruce Not Found/Deleted" + e) #File Destoryed
+            return("901 Resoruce Not Found/Deleted" + str(e)) #File Destoryed
         # if file != 601:
         #     del obj[uuid]
 
