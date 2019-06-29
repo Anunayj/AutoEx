@@ -2,7 +2,7 @@ import os
 import threading
 class opencsv:
     def __init__(self):
-        lock = threading.Lock()
+        self.lock = threading.Lock()
         #self.file = open(filename+".csv","a+")
         self.file = ''
 
