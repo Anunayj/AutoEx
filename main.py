@@ -19,8 +19,10 @@ class probar:
         self.lock = threading.Lock()
         self.progress = 0
     def increment(self):
+        print("Whats Happening")
         with self.lock:
             self.progress = self.progress + 1
+        print("Thats Happening")
 
 
 
@@ -63,7 +65,7 @@ class resultProcessor:
         self.loop(wait=True)
 
     def loop(self,wait=False):
-        with ThreadPoolExecutor(40) as executor:
+        with ThreadPoolExecutor(100) as executor:
             for roll in range(1,self.maxroll+1):
                 executor.submit(self.tryandfail,roll)
             executor.shutdown(wait=wait)
