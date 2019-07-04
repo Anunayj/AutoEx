@@ -78,7 +78,6 @@ class resultProcessor:
         for _ in range(3):
             #headers
             try:
-                print("lets try this")
                 #Some randmoness for both seesion Id
                 randomness = randomString()
 
@@ -104,7 +103,6 @@ class resultProcessor:
                 resp=sess.post('http://result.rgpv.ac.in/Result/ProgramSelect.aspx',data=postdata,allow_redirects=True)
 
                 url=resp.url
-                print("It worked")
                 return((sess, url))
 
             except Exception as e:
@@ -147,16 +145,17 @@ class resultProcessor:
                 wrong='<script language="JavaScript">alert("you have entered a wrong text");</script>'
 
                 if resultFound in result.text:
-                    print("started")
                     self.processResult(result.text,roll)
                     self.progress.increment()
                     return(0)
                 elif wrong in result.text:
                     return(1)
+                elif "EnableEventValidation" in result.text:
+                        self.progress.increment()
+                        return(0)
                 else:
-                    self.progress.increment()
-                    return(0)
-                
+                    return(1)
+                #FIXME HackFIX 2000!
             except Exception as e:
                 print(e)
                 self.fail = True
