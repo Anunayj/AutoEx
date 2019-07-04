@@ -19,10 +19,8 @@ class probar:
         self.lock = threading.Lock()
         self.progress = 0
     def increment(self):
-        print("Whats Happening")
         with self.lock:
             self.progress = self.progress + 1
-        print("Thats Happening")
 
 
 
@@ -143,7 +141,7 @@ class resultProcessor:
                 #process data
                 resultFound='<td class="resultheader">'
                 wrong='<script language="JavaScript">alert("you have entered a wrong text");</script>'
-
+                notFound='<script language=JavaScript>alert("Result for this Enrollment No. not Found");</script>'
                 if resultFound in result.text:
                     self.processResult(result.text,roll)
                     self.progress.increment()
@@ -151,8 +149,11 @@ class resultProcessor:
                 elif wrong in result.text:
                     return(1)
                 elif "EnableEventValidation" in result.text:
-                        self.progress.increment()
-                        return(0)
+                    self.progress.increment()
+                    return(0)
+                elif notFound in result.text:
+                    self.progress.increment()
+                    return(0)
                 else:
                     return(1)
                 #FIXME HackFIX 2000!
